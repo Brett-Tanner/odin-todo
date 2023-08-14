@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "alwaysStrict": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES6",
+    "moduleResolution": "node"
+  }
+}
