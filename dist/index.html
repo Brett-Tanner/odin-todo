@@ -6,5 +6,13 @@
     <title>Odin ToDo</title>
     <script src="main.js" defer></script>
   </head>
-  <body></body>
+  <body class="grid grid-cols-10 grid-rows-main items-start p-2">
+    <div class="col-span-full row-start-1 flex justify-center items-center">
+      <h1 id="mainHeading" class="text-center text-4xl">All ToDos</h1>
+    </div>
+    <main
+      id="content"
+      class="col-span-8 grid grid-cols-2 md:grid-cols-4 justify-items-center items-center gap-2"
+    ></main>
+  </body>
 </html>

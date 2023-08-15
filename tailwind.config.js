@@ -1,8 +1,12 @@
 /** @type {import('tailwindcss').config} */
 module.exports = {
-  content: ["./src/*.ts", "./dist/*.html"],
+  content: ["./src/*.ts", "./src/**/*.ts", "./dist/*.html"],
   theme: {
-    extend: {},
+    extend: {
+      gridTemplateRows: {
+        main: "60px, 1fr",
+      },
+    },
   },
   plugins: [],
 };
