@@ -18,6 +18,8 @@ function listProjects(projects: project[]) {
   );
   listContainer.appendChild(newProjectButton);
   listContainer.classList.add(
+    "sticky",
+    "top-2",
     "col-start-9",
     "col-span-2",
     "rounded-xl",
@@ -27,8 +29,9 @@ function listProjects(projects: project[]) {
     "shadow-lg",
     "flex",
     "flex-col",
-    "px-3",
-    "divide-y-2"
+    "p-2",
+    "divide-y-2",
+    "text-center"
   );
 
   document.body.appendChild(listContainer);
@@ -40,7 +43,7 @@ function projectCard(project: project) {
   const projectLink = document.createElement("a");
   projectLink.href = "";
   projectLink.innerText = project.name;
-  projectLink.classList.add("grow");
+  projectLink.classList.add("font-semibold", "grow");
   projectLink.addEventListener("click", (e) => {
     e.preventDefault();
   });
@@ -60,7 +63,17 @@ function projectCard(project: project) {
   );
   card.appendChild(newTodoButton);
 
-  card.classList.add("flex", "items-center", "p-2", "hover:bg-slate-100");
+  card.classList.add(
+    "flex",
+    "flex-wrap",
+    "justify-center",
+    "items-center",
+    "rounded",
+    "p-2",
+    "hover:bg-slate-100",
+    "hover:scale-105",
+    "transition-transform"
+  );
 
   return card;
 }
