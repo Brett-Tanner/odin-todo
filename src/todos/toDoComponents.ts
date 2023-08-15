@@ -1,38 +1,46 @@
 import { format } from "date-fns";
 
 function cardButtons() {
-  const buttons = document.createElement("div");
+  const buttons: HTMLButtonElement[] = [];
+  const buttonContainer = document.createElement("div");
 
   const descriptionButton = document.createElement("button");
   descriptionButton.innerHTML = "<i class='bi bi-card-text'></i>";
-  descriptionButton.classList.add(
-    "hover:scale-110",
-    "hover:font-bold",
-    "transition-transform"
-  );
-  buttons.appendChild(descriptionButton);
+  buttons.push(descriptionButton);
 
   const notesButton = document.createElement("button");
   notesButton.innerHTML = "<i class='bi bi-journal'></i>";
-  notesButton.classList.add(
-    "hover:scale-110",
-    "hover:font-bold",
-    "transition-transform"
-  );
-  buttons.appendChild(notesButton);
+  buttons.push(notesButton);
 
   const checkListButton = document.createElement("button");
   checkListButton.innerHTML = "<i class='bi bi-card-checklist'></i>";
-  checkListButton.classList.add(
-    "hover:scale-110",
-    "hover:font-bold",
-    "transition-transform"
+  buttons.push(checkListButton);
+
+  const editButton = document.createElement("button");
+  editButton.innerHTML = "<i class='bi bi-pen'></i>";
+  buttons.push(editButton);
+
+  const deleteButton = document.createElement("button");
+  deleteButton.innerHTML = "<i class='bi bi-trash3'></i>";
+  buttons.push(deleteButton);
+
+  buttons.forEach((button) => {
+    button.classList.add(
+      "hover:scale-110",
+      "hover:font-extrabold",
+      "transition-transform"
+    );
+    buttonContainer.appendChild(button);
+  });
+
+  buttonContainer.classList.add(
+    "flex",
+    "justify-between",
+    "gap-3",
+    "font-semibold"
   );
-  buttons.appendChild(checkListButton);
 
-  buttons.classList.add("flex", "gap-3", "font-semibold");
-
-  return buttons;
+  return buttonContainer;
 }
 
 function listTodos(todos: todo[], title: string) {
