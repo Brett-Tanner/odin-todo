@@ -14,7 +14,7 @@ const projects: project[] = [
 
 const priorities: priority[] = ["Immediate", "Urgent", "Moderate", "Low"];
 const todos: todo[] = [];
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 11; i++) {
   const todo = toDoFactory(
     "A long string of content to test the description property of the todo object",
     Date.now() + Math.random() * 1000000000,
@@ -36,5 +36,7 @@ function sortByDueDate(a: todo, b: todo) {
 
 todos.sort(sortByDueDate);
 
-projectComponents.listProjects(projects);
-todoComponents.listTodos(todos, "All ToDos");
+projectComponents.list(projects);
+todoComponents.list(todos, "All ToDos");
+
+export { projects };

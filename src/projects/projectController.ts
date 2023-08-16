@@ -9,7 +9,9 @@ function projectFactory(name: string) {
     priority: priority,
     title: string
   ) {
-    todoList.push(toDoFactory(description, dueDate, priority, title));
+    const newTodo = toDoFactory(description, dueDate, priority, title);
+    todoList.push(newTodo);
+    return newTodo;
   }
 
   return { addTodo, name, todoList };

@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 
-function cardButtons() {
+function buttonRow() {
   const buttons: HTMLButtonElement[] = [];
   const buttonContainer = document.createElement("div");
 
@@ -43,7 +43,7 @@ function cardButtons() {
   return buttonContainer;
 }
 
-function listTodos(todos: todo[], title: string) {
+function list(todos: todo[], title: string) {
   const mainHeading = document.getElementById("mainHeading");
   if (mainHeading) {
     mainHeading.innerText = title;
@@ -52,47 +52,47 @@ function listTodos(todos: todo[], title: string) {
   }
   const main = document.getElementById("content");
   todos.forEach((todo) => {
-    const card = todoCard(todo);
-    main?.appendChild(card);
+    const todoCard = card(todo);
+    main?.appendChild(todoCard);
   });
 }
 
-function todoCard(todo: todo) {
-  const card = document.createElement("div");
+function card(todo: todo) {
+  const todoCard = document.createElement("div");
 
   const title = document.createElement("h5");
   title.innerText = todo.title;
   title.classList.add("font-semibold", "text-lg");
-  card.appendChild(title);
+  todoCard.appendChild(title);
 
   const dueDate = document.createElement("p");
   dueDate.innerText = `Due: ${format(todo.dueDate, "MM/dd/yyyy")}`;
   dueDate.classList.add("text-xs");
-  card.appendChild(dueDate);
+  todoCard.appendChild(dueDate);
 
   const description = document.createElement("p");
   description.innerText = todo.description;
-  card.appendChild(description);
+  todoCard.appendChild(description);
 
-  card.appendChild(cardButtons());
+  todoCard.appendChild(buttonRow());
 
   switch (todo.priority) {
     case "Immediate":
-      card.classList.add("bg-yellow-200");
+      todoCard.classList.add("bg-yellow-300");
       break;
     case "Urgent":
-      card.classList.add("bg-red-200");
+      todoCard.classList.add("bg-red-300");
       break;
     case "Moderate":
-      card.classList.add("bg-orange-200");
+      todoCard.classList.add("bg-orange-300");
       break;
     case "Low":
-      card.classList.add("bg-blue-200");
+      todoCard.classList.add("bg-blue-300");
       break;
     default:
       break;
   }
-  card.classList.add(
+  todoCard.classList.add(
     "flex",
     "flex-col",
     "gap-3",
@@ -104,7 +104,7 @@ function todoCard(todo: todo) {
     "hover:scale-105"
   );
 
-  return card;
+  return todoCard;
 }
 
-export { listTodos };
+export { list };

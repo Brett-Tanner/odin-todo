@@ -8,6 +8,12 @@ type priority = "Immediate" | "Urgent" | "Moderate" | "Low";
 interface project {
   name: string;
   todoList: todo[];
+  addTodo(
+    description: string,
+    dueDate: number,
+    priority: priority,
+    title: string
+  ): todo;
 }
 
 interface todo {
