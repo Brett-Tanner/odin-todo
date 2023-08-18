@@ -43,6 +43,17 @@ function buttonRow() {
   return buttonContainer;
 }
 
+function getMain() {
+  const existingMain = document.getElementById("content");
+  if (existingMain) {
+    return existingMain;
+  } else {
+    const main = document.createElement("main");
+    main.id = "content";
+    return main;
+  }
+}
+
 function list(todos: todo[], title: string) {
   const mainHeading = document.getElementById("mainHeading");
   if (mainHeading) {
@@ -50,7 +61,8 @@ function list(todos: todo[], title: string) {
   } else {
     throw new Error("Main heading is missing");
   }
-  const main = document.getElementById("content");
+  const main = getMain();
+  main.innerHTML = "";
   todos.forEach((todo) => {
     const todoCard = card(todo);
     main?.appendChild(todoCard);
@@ -72,6 +84,7 @@ function card(todo: todo) {
 
   const description = document.createElement("p");
   description.innerText = todo.description;
+  description.classList.add("grow");
   todoCard.appendChild(description);
 
   todoCard.appendChild(buttonRow());
