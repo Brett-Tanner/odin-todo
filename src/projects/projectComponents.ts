@@ -1,14 +1,34 @@
-import { modal, form } from "../sharedComponents";
+import { modal } from "../sharedComponents";
 import { projects } from "..";
+import { projectFactory } from "./projectController";
+
+function createListContainer() {
+  const listContainer = document.createElement("nav");
+  listContainer.id = "projectNav";
+  return listContainer;
+}
 
 function list(projects: project[]) {
-  const listContainer = document.createElement("nav");
+  const existingContainer = document.getElementById("projectNav");
+  const listContainer =
+    existingContainer !== null ? existingContainer : createListContainer();
+  listContainer.innerHTML = "";
+
   projects.forEach((project) => {
     listContainer.appendChild(card(project));
   });
   const newProjectButton = document.createElement("button");
   newProjectButton.innerText = "➕ Project";
-  newProjectButton.classList.add("btn-primary", "m-2", "hover:scale-110");
+  newProjectButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    modal("New Project", projectForm());
+  });
+  newProjectButton.classList.add(
+    "btn-primary",
+    "m-2",
+    "hover:scale-110",
+    "transition-transform"
+  );
   listContainer.appendChild(newProjectButton);
   listContainer.classList.add(
     "sticky",
@@ -35,7 +55,12 @@ function card(project: project) {
   const projectLink = document.createElement("a");
   projectLink.href = "";
   projectLink.innerText = project.name;
-  projectLink.classList.add("font-semibold", "grow", "hover:scale-110");
+  projectLink.classList.add(
+    "font-semibold",
+    "grow",
+    "hover:scale-110",
+    "transition-transform"
+  );
   projectLink.addEventListener("click", (e) => {
     e.preventDefault();
   });
@@ -43,10 +68,14 @@ function card(project: project) {
 
   const newTodoButton = document.createElement("button");
   newTodoButton.innerText = "➕ ToDo";
-  newTodoButton.classList.add("btn-primary", "hover:scale-110");
+  newTodoButton.classList.add(
+    "btn-primary",
+    "hover:scale-110",
+    "transition-transform"
+  );
   newTodoButton.addEventListener("click", (e) => {
     e.preventDefault();
-    modal("New ToDo", form(todoFields()));
+    modal("New ToDo", todoForm());
   });
   card.appendChild(newTodoButton);
 
@@ -63,23 +92,50 @@ function card(project: project) {
   return card;
 }
 
-function todoFields() {
-  const fieldArray: HTMLElement[] = [];
+function projectForm() {
+  const form = document.createElement("form");
+  form.method = "dialog";
+
+  const nameField = document.createElement("div");
+  const nameLabel = document.createElement("label");
+  nameLabel.innerText = "Project Name";
+  const nameInput = document.createElement("input");
+  nameInput.autofocus = true;
+  nameField.append(nameLabel, nameInput);
+  nameField.classList.add("flex", "flex-col", "gap-2");
+  form.appendChild(nameField);
 
   const submitButton = document.createElement("button");
-  submitButton.innerText = "Submit";
-  submitButton.classList.add("btn-primary", "border", "border-slate-400");
-  // TODO: create the new todo here
-  submitButton.addEventListener("submit", (e) => {
-    e.preventDefault();
+  submitButton.classList.add("btn-primary");
+  submitButton.innerText = "Submit Project";
+  submitButton.addEventListener("click", () => {
+    projects.push(projectFactory(nameInput.value));
+    list(projects);
   });
-  fieldArray.push(submitButton);
+  form.appendChild(submitButton);
+
+  form.classList.add("flex", "flex-col", "gap-4");
+  return form;
+}
+
+function todoForm() {
+  const form = document.createElement("form");
+  form.method = "dialog";
+  const fieldArray: HTMLElement[] = [];
 
   fieldArray.forEach((field) => {
     field.classList.add("flex", "flex-col", "gap-2");
+    form.appendChild(field);
   });
+  const submitButton = document.createElement("button");
+  submitButton.innerText = "Submit ToDo";
+  submitButton.classList.add("btn-primary", "border", "border-slate-400");
+  // TODO: create the new todo here
+  submitButton.addEventListener("click", () => {});
+  fieldArray.push(submitButton);
 
-  return fieldArray;
+  form.classList.add("flex", "flex-col", "gap-4");
+  return form;
 }
 
 export { list };

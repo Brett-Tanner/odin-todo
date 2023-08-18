@@ -3,7 +3,7 @@ function modal(title: string, content: HTMLFormElement) {
 
   const heading = document.createElement("h2");
   heading.innerText = title;
-  heading.classList.add("mb-4");
+  heading.classList.add("mb-4", "font-bold", "text-xl");
   modal.appendChild(heading);
 
   const closeButton = document.createElement("button");
@@ -37,16 +37,4 @@ function modal(title: string, content: HTMLFormElement) {
   modal.showModal();
 }
 
-function form(fields: HTMLElement[]) {
-  const form = document.createElement("form");
-  form.method = "dialog";
-
-  fields.forEach((field) => {
-    form.appendChild(field);
-  });
-
-  form.classList.add("flex", "flex-col", "gap-4");
-  return form;
-}
-
-export { form, modal };
+export { modal };
