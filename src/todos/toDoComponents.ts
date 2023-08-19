@@ -30,6 +30,10 @@ function buttonRow(todo: todo, target: HTMLDivElement) {
   buttons.push(editButton);
 
   const deleteButton = document.createElement("button");
+  deleteButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    removeFromList(todo);
+  });
   deleteButton.innerHTML = "<i class='bi bi-trash3'></i>";
   buttons.push(deleteButton);
 
@@ -128,6 +132,12 @@ function list(todos: todo[], title: string) {
     const todoCard = card(todo);
     main?.appendChild(todoCard);
   });
+}
+
+function removeFromList(todo: todo) {
+  const project = todo.project;
+  todo.deleteTodo();
+  list(project.todoList, `${project.name} ToDos`);
 }
 
 function showDescription(todo: todo, target: HTMLDivElement) {

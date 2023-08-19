@@ -21,8 +21,10 @@ interface todo {
   dueDate: number;
   notes: string[];
   priority: priority;
+  project: project;
   title: string;
   checkList: checkListItem[];
   addNote(note: string): string;
+  deleteTodo(this: todo): todo;
   modifyCheckList(steps: string[]): checkListItem[];
 }

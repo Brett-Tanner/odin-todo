@@ -15,6 +15,15 @@ function toDoFactory(
     return note;
   }
 
+  function deleteTodo(this: todo) {
+    const index = project.todoList.indexOf(this);
+    project.todoList.splice(index, 1);
+
+    console.log(this);
+
+    return this;
+  }
+
   function modifyCheckList(steps: string[]) {
     checkList.length = 0;
     steps.forEach((step) => {
@@ -26,6 +35,7 @@ function toDoFactory(
   return {
     addNote,
     checkList,
+    deleteTodo,
     description,
     dueDate,
     modifyCheckList,
