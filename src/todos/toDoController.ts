@@ -11,6 +11,7 @@ function toDoFactory(
 
   function addNote(note: string) {
     notes.push(note);
+    return note;
   }
 
   function modifyCheckList(steps: string[]) {
@@ -18,6 +19,7 @@ function toDoFactory(
     steps.forEach((step) => {
       checkList.push(checkListController.checkListItemFactory(step));
     });
+    return checkList;
   }
 
   return {
@@ -26,6 +28,7 @@ function toDoFactory(
     description,
     dueDate,
     modifyCheckList,
+    notes,
     priority,
     title,
   };

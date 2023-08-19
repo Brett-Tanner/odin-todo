@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { sortByDueDate } from "./toDoController";
 
-function buttonRow() {
+function buttonRow(todo: todo, target: HTMLDivElement) {
   const buttons: HTMLButtonElement[] = [];
   const buttonContainer = document.createElement("div");
 
@@ -11,6 +11,10 @@ function buttonRow() {
 
   const notesButton = document.createElement("button");
   notesButton.innerHTML = "<i class='bi bi-journal'></i>";
+  notesButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    showNotes(todo, target);
+  });
   buttons.push(notesButton);
 
   const checkListButton = document.createElement("button");
@@ -44,33 +48,6 @@ function buttonRow() {
   return buttonContainer;
 }
 
-function getMain() {
-  const existingMain = document.getElementById("content");
-  if (existingMain) {
-    return existingMain;
-  } else {
-    const main = document.createElement("main");
-    main.id = "content";
-    return main;
-  }
-}
-
-function list(todos: todo[], title: string) {
-  const mainHeading = document.getElementById("mainHeading");
-  if (mainHeading) {
-    mainHeading.innerText = title;
-  } else {
-    throw new Error("Main heading is missing");
-  }
-  const main = getMain();
-  main.innerHTML = "";
-  todos.sort(sortByDueDate);
-  todos.forEach((todo) => {
-    const todoCard = card(todo);
-    main?.appendChild(todoCard);
-  });
-}
-
 function card(todo: todo) {
   const todoCard = document.createElement("div");
 
@@ -89,7 +66,7 @@ function card(todo: todo) {
   description.classList.add("grow");
   todoCard.appendChild(description);
 
-  todoCard.appendChild(buttonRow());
+  todoCard.appendChild(buttonRow(todo, description));
 
   switch (todo.priority) {
     case "Immediate":
@@ -120,6 +97,52 @@ function card(todo: todo) {
   );
 
   return todoCard;
+}
+
+function getMain() {
+  const existingMain = document.getElementById("content");
+  if (existingMain) {
+    return existingMain;
+  } else {
+    const main = document.createElement("main");
+    main.id = "content";
+    return main;
+  }
+}
+
+function list(todos: todo[], title: string) {
+  const mainHeading = document.getElementById("mainHeading");
+  if (mainHeading) {
+    mainHeading.innerText = title;
+  } else {
+    throw new Error("Main heading is missing");
+  }
+  const main = getMain();
+  main.innerHTML = "";
+  todos.sort(sortByDueDate);
+  todos.forEach((todo) => {
+    const todoCard = card(todo);
+    main?.appendChild(todoCard);
+  });
+}
+
+function showNotes(todo: todo, target: HTMLDivElement) {
+  target.innerHTML = "";
+  const emptyMessage = "No notes yet!";
+  const p = document.createElement("p");
+  const notes: string[] | string =
+    todo.notes.length === 0 ? emptyMessage : todo.notes;
+
+  if (notes instanceof Array) {
+    notes.forEach((note) => {
+      p.innerText = note;
+      target.appendChild(p);
+    });
+  } else {
+    p.innerText = emptyMessage;
+    target.appendChild(p);
+    target.classList.add("flex", "justify-center", "items-center");
+  }
 }
 
 export { list };
