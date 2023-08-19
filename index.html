@@ -10,15 +10,20 @@
     />
     <script src="main.js" defer></script>
   </head>
-  <body class="grid grid-cols-10 grid-rows-main items-start p-2 bg-gray-900">
+  <body
+    class="grid grid-cols-10 grid-rows-main items-start gap-4 p-2 bg-gray-900"
+  >
     <div class="col-span-full row-start-1 flex justify-center items-center">
-      <h1 id="mainHeading" class="text-center text-4xl text-slate-400">
-        All ToDos
-      </h1>
+      <div class="flex flex-col gap-4">
+        <h1 id="mainHeading" class="text-center text-4xl text-slate-400">
+          All ToDos
+        </h1>
+        <hr class="w-screen border border-slate-400" />
+      </div>
     </div>
     <main
       id="content"
-      class="col-span-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 justify-items-center items-center gap-4 px-4"
+      class="col-span-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center items-center gap-4 px-4"
     ></main>
   </body>
 </html>
