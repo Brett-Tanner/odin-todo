@@ -1,7 +1,7 @@
 import { modal } from "../sharedComponents";
 import { projects } from "..";
 import { projectFactory } from "./projectController";
-import { sortByDueDate, toDoFactory } from "../todos/toDoController";
+import { toDoFactory } from "../todos/toDoController";
 import * as todoComponents from "../todos/toDoComponents";
 
 function card(project: project) {
@@ -102,10 +102,15 @@ function list(projects: project[]) {
   listContainer.appendChild(allTodosButton);
 
   listContainer.classList.add(
-    "sticky",
-    "top-2",
-    "col-start-9",
-    "col-span-2",
+    "order-1",
+    "mx-4",
+    "md:order-2",
+    "md:sticky",
+    "md:top-2",
+    "md:col-start-9",
+    "md:col-span-2",
+    "md:ml-0",
+    "md:mr-4",
     "rounded-xl",
     "border",
     "border-violet-400",
