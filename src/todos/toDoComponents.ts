@@ -23,9 +23,13 @@ function buttonRow(todo: todo, target: HTMLDivElement) {
   });
   buttons.push(notesButton);
 
-  const checkListButton = document.createElement("button");
-  checkListButton.innerHTML = "<i class='bi bi-card-checklist'></i>";
-  buttons.push(checkListButton);
+  const checklistButton = document.createElement("button");
+  checklistButton.innerHTML = "<i class='bi bi-card-checklist'></i>";
+  checklistButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    showChecklist(todo, target);
+  });
+  buttons.push(checklistButton);
 
   const editButton = document.createElement("button");
   editButton.innerHTML = "<i class='bi bi-pen'></i>";
@@ -124,6 +128,13 @@ function getMain() {
   }
 }
 
+// TODO: implement this
+function checklistForm(todo: todo) {
+  const form = document.createElement("form");
+
+  return form;
+}
+
 function list(todos: todo[], title: string) {
   const mainHeading = document.getElementById("mainHeading");
   if (mainHeading) {
@@ -140,6 +151,13 @@ function list(todos: todo[], title: string) {
   });
 }
 
+// TODO: implement this
+function noteForm(todo: todo) {
+  const form = document.createElement("form");
+
+  return form;
+}
+
 function removeFromList(todo: todo) {
   const project = todo.project;
   todo.deleteTodo();
@@ -150,14 +168,46 @@ function showDescription(todo: todo, target: HTMLDivElement) {
   target.innerText = todo.description;
 }
 
+function showChecklist(todo: todo, target: HTMLDivElement) {
+  target.innerHTML = "";
+  const addChecklistButton = document.createElement("button");
+  addChecklistButton.classList.add("btn-primary");
+  addChecklistButton.innerText = "➕ Checklist";
+  addChecklistButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    modal(`New checklist for ${todo.title}`, checklistForm(todo));
+  });
+  if (todo.checklist.length === 0) {
+    const p = document.createElement("p");
+    p.innerText = "No checklist yet";
+    target.append(p, addChecklistButton);
+    target.classList.add(
+      "flex",
+      "flex-col",
+      "gap-3",
+      "justify-center",
+      "items-center"
+    );
+  } else {
+    throw new Error("Haven't implement checklist display yet");
+  }
+}
+
 function showEditModal(todo: todo) {
   modal("Edit ToDo", todoForm(todo.project, todo));
 }
 
 function showNotes(todo: todo, target: HTMLDivElement) {
   target.innerHTML = "";
-  const emptyMessage = "No notes yet!";
+  const emptyMessage = "No notes yet";
   const p = document.createElement("p");
+  const addNoteButton = document.createElement("button");
+  addNoteButton.classList.add("btn-primary");
+  addNoteButton.innerText = "➕ Note";
+  addNoteButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    modal(`New note for ${todo.title}`, noteForm(todo));
+  });
   const notes: string[] | string =
     todo.notes.length === 0 ? emptyMessage : todo.notes;
 
@@ -166,10 +216,17 @@ function showNotes(todo: todo, target: HTMLDivElement) {
       p.innerText = note;
       target.appendChild(p);
     });
+    target.appendChild(addNoteButton);
   } else {
     p.innerText = emptyMessage;
-    target.appendChild(p);
-    target.classList.add("flex", "justify-center", "items-center");
+    target.append(p, addNoteButton);
+    target.classList.add(
+      "flex",
+      "flex-col",
+      "gap-3",
+      "justify-center",
+      "items-center"
+    );
   }
 }
 

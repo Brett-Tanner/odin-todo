@@ -1,4 +1,4 @@
-interface checkListItem {
+interface checklistItem {
   complete: boolean;
   step: string;
 }
@@ -23,8 +23,8 @@ interface todo {
   priority: priority;
   project: project;
   title: string;
-  checkList: checkListItem[];
+  checklist: checklistItem[];
   addNote(note: string): string;
   deleteTodo(this: todo): todo;
-  modifyCheckList(steps: string[]): checkListItem[];
+  modifyChecklist(steps: string[]): checklistItem[];
 }

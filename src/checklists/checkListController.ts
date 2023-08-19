@@ -1,4 +1,4 @@
-function checkListItemFactory(step: string) {
+function checklistItemFactory(step: string) {
   let complete = false;
 
   function toggleComplete() {
@@ -8,4 +8,4 @@ function checkListItemFactory(step: string) {
   return { complete, step, toggleComplete };
 }
 
-export { checkListItemFactory };
+export { checklistItemFactory };

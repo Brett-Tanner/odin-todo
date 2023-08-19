@@ -1,4 +1,4 @@
-import * as checkListController from "../checklists/checkListController";
+import * as checklistController from "../checklists/checkListController";
 
 function toDoFactory(
   description: string,
@@ -7,7 +7,7 @@ function toDoFactory(
   project: project,
   title: string
 ) {
-  const checkList: checkListItem[] = [];
+  const checklist: checklistItem[] = [];
   const notes: string[] = [];
 
   function addNote(note: string) {
@@ -21,21 +21,21 @@ function toDoFactory(
     return this;
   }
 
-  function modifyCheckList(steps: string[]) {
-    checkList.length = 0;
+  function modifyChecklist(steps: string[]) {
+    checklist.length = 0;
     steps.forEach((step) => {
-      checkList.push(checkListController.checkListItemFactory(step));
+      checklist.push(checklistController.checklistItemFactory(step));
     });
-    return checkList;
+    return checklist;
   }
 
   return {
     addNote,
-    checkList,
+    checklist,
     deleteTodo,
     description,
     dueDate,
-    modifyCheckList,
+    modifyChecklist,
     notes,
     priority,
     project,
