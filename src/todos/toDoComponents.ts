@@ -1,5 +1,7 @@
 import { format } from "date-fns";
+import { modal } from "../sharedComponents";
 import { sortByDueDate } from "./toDoController";
+import { todoForm } from "../projects/projectComponents";
 
 function buttonRow(todo: todo, target: HTMLDivElement) {
   const buttons: HTMLButtonElement[] = [];
@@ -27,6 +29,10 @@ function buttonRow(todo: todo, target: HTMLDivElement) {
 
   const editButton = document.createElement("button");
   editButton.innerHTML = "<i class='bi bi-pen'></i>";
+  editButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    showEditModal(todo);
+  });
   buttons.push(editButton);
 
   const deleteButton = document.createElement("button");
@@ -142,6 +148,10 @@ function removeFromList(todo: todo) {
 
 function showDescription(todo: todo, target: HTMLDivElement) {
   target.innerText = todo.description;
+}
+
+function showEditModal(todo: todo) {
+  modal("Edit ToDo", todoForm(todo.project, todo));
 }
 
 function showNotes(todo: todo, target: HTMLDivElement) {

@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { modal } from "../sharedComponents";
 import { projects } from "..";
 import { projectFactory } from "./projectController";
@@ -151,7 +152,7 @@ function projectForm() {
   return form;
 }
 
-function todoForm(project: project) {
+function todoForm(project: project, todo?: todo) {
   const form = document.createElement("form");
   form.method = "dialog";
   const fieldArray: HTMLElement[] = [];
@@ -161,6 +162,7 @@ function todoForm(project: project) {
   titleLabel.innerText = "Title";
   const titleInput = document.createElement("input");
   titleInput.autofocus = true;
+  if (todo) titleInput.value = todo.title;
   titleField.append(titleLabel, titleInput);
   fieldArray.push(titleField);
 
@@ -168,6 +170,7 @@ function todoForm(project: project) {
   const descriptionLabel = document.createElement("label");
   descriptionLabel.innerText = "Description";
   const descriptionInput = document.createElement("textarea");
+  if (todo) descriptionInput.value = todo.description;
   descriptionField.append(descriptionLabel, descriptionInput);
   fieldArray.push(descriptionField);
 
@@ -180,6 +183,7 @@ function todoForm(project: project) {
     const option = document.createElement("option");
     option.innerText = priority;
     option.value = priority;
+    if (todo && todo.priority === priority) option.selected = true;
     priorityInput.appendChild(option);
   });
   priorityField.append(priorityLabel, priorityInput);
@@ -189,6 +193,7 @@ function todoForm(project: project) {
   const dueDateLabel = document.createElement("label");
   dueDateLabel.innerText = "Due Date";
   const dueDateInput = document.createElement("input");
+  if (todo) dueDateInput.value = format(new Date(todo.dueDate), "yyyy-MM-dd");
   dueDateInput.type = "date";
   dueDateField.append(dueDateLabel, dueDateInput);
   fieldArray.push(dueDateField);
@@ -206,17 +211,16 @@ function todoForm(project: project) {
     const priority = priorityInput.value as priority;
     const title = titleInput.value;
 
-    console.log(
-      title,
-      description,
-      priority,
-      dueDate,
-      project,
-      project.todoList
-    );
-    project.todoList.push(
-      toDoFactory(description, dueDate, priority, project, title)
-    );
+    if (todo) {
+      todo.description = description;
+      todo.dueDate = dueDate;
+      todo.priority = priority;
+      todo.title = title;
+    } else {
+      project.todoList.push(
+        toDoFactory(description, dueDate, priority, project, title)
+      );
+    }
     todoComponents.list(project.todoList, `${project.name} ToDos`);
   });
   form.appendChild(submitButton);
@@ -225,4 +229,4 @@ function todoForm(project: project) {
   return form;
 }
 
-export { list };
+export { list, todoForm };

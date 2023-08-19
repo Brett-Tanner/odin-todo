@@ -18,9 +18,6 @@ function toDoFactory(
   function deleteTodo(this: todo) {
     const index = project.todoList.indexOf(this);
     project.todoList.splice(index, 1);
-
-    console.log(this);
-
     return this;
   }
 
