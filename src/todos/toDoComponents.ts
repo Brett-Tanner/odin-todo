@@ -7,6 +7,10 @@ function buttonRow(todo: todo, target: HTMLDivElement) {
 
   const descriptionButton = document.createElement("button");
   descriptionButton.innerHTML = "<i class='bi bi-card-text'></i>";
+  descriptionButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    showDescription(todo, target);
+  });
   buttons.push(descriptionButton);
 
   const notesButton = document.createElement("button");
@@ -124,6 +128,10 @@ function list(todos: todo[], title: string) {
     const todoCard = card(todo);
     main?.appendChild(todoCard);
   });
+}
+
+function showDescription(todo: todo, target: HTMLDivElement) {
+  target.innerText = todo.description;
 }
 
 function showNotes(todo: todo, target: HTMLDivElement) {
