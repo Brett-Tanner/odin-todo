@@ -1,7 +1,7 @@
 import { modal } from "../sharedComponents";
 import { projects } from "..";
 import { projectFactory } from "./projectController";
-import { toDoFactory } from "../todos/toDoController";
+import { sortByDueDate, toDoFactory } from "../todos/toDoController";
 import * as todoComponents from "../todos/toDoComponents";
 
 function card(project: project) {
@@ -18,6 +18,7 @@ function card(project: project) {
   );
   projectLink.addEventListener("click", (e) => {
     e.preventDefault();
+    todoComponents.list(project.todoList, `${project.name} ToDos`);
   });
   card.appendChild(projectLink);
 
@@ -65,6 +66,7 @@ function list(projects: project[]) {
   projects.forEach((project) => {
     listContainer.appendChild(card(project));
   });
+
   const newProjectButton = document.createElement("button");
   newProjectButton.innerText = "➕ Project";
   newProjectButton.addEventListener("click", (e) => {
@@ -78,6 +80,27 @@ function list(projects: project[]) {
     "transition-transform"
   );
   listContainer.appendChild(newProjectButton);
+
+  const allTodosButton = document.createElement("button");
+  allTodosButton.innerText = "All ToDos";
+  allTodosButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    const allTodos = projects.reduce((array: todo[], project) => {
+      project.todoList.forEach((toDo) => {
+        array.push(toDo);
+      });
+      return array;
+    }, []);
+    todoComponents.list(allTodos, "All ToDos");
+  });
+  allTodosButton.classList.add(
+    "btn-primary",
+    "m-2",
+    "hover:scale-110",
+    "transition-transform"
+  );
+  listContainer.appendChild(allTodosButton);
+
   listContainer.classList.add(
     "sticky",
     "top-2",

@@ -13,7 +13,6 @@ const projects: project[] = [
 ];
 
 const priorities: priority[] = ["Immediate", "Urgent", "Moderate", "Low"];
-const todos: todo[] = [];
 for (let i = 0; i < 11; i++) {
   const todo = toDoFactory(
     "A long string of content to test the description property of the todo object",
@@ -21,22 +20,19 @@ for (let i = 0; i < 11; i++) {
     priorities[Math.floor(Math.random() * priorities.length)],
     "Test Title"
   );
-  todos.push(todo);
+  projects[0].todoList.push(todo);
 }
 
 // Real stuff, might not be here though
 
-function sortByDueDate(a: todo, b: todo) {
-  const dateA = a.dueDate;
-  const dateB = b.dueDate;
-  if (dateA < dateB) return -1;
-  if (dateB < dateA) return 1;
-  return 0;
-}
-
-todos.sort(sortByDueDate);
+const allTodos = projects.reduce((array: todo[], project) => {
+  project.todoList.forEach((toDo) => {
+    array.push(toDo);
+  });
+  return array;
+}, []);
 
 projectComponents.list(projects);
-todoComponents.list(todos, "All ToDos");
+todoComponents.list(allTodos, "All ToDos");
 
 export { projects };

@@ -31,4 +31,12 @@ function toDoFactory(
   };
 }
 
-export { toDoFactory };
+function sortByDueDate(a: todo, b: todo) {
+  const dateA = a.dueDate;
+  const dateB = b.dueDate;
+  if (dateA < dateB) return -1;
+  if (dateB < dateA) return 1;
+  return 0;
+}
+
+export { sortByDueDate, toDoFactory };

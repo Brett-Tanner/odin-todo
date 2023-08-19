@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { sortByDueDate } from "./toDoController";
 
 function buttonRow() {
   const buttons: HTMLButtonElement[] = [];
@@ -63,6 +64,7 @@ function list(todos: todo[], title: string) {
   }
   const main = getMain();
   main.innerHTML = "";
+  todos.sort(sortByDueDate);
   todos.forEach((todo) => {
     const todoCard = card(todo);
     main?.appendChild(todoCard);
