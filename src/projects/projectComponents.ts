@@ -209,7 +209,9 @@ function todoForm(project: project) {
       project,
       project.todoList
     );
-    project.todoList.push(toDoFactory(description, dueDate, priority, title));
+    project.todoList.push(
+      toDoFactory(description, dueDate, priority, project, title)
+    );
     todoComponents.list(project.todoList, `${project.name} ToDos`);
   });
   form.appendChild(submitButton);

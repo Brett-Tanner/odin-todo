@@ -4,6 +4,7 @@ function toDoFactory(
   description: string,
   dueDate: number,
   priority: priority,
+  project: project,
   title: string
 ) {
   const checkList: checkListItem[] = [];
@@ -30,6 +31,7 @@ function toDoFactory(
     modifyCheckList,
     notes,
     priority,
+    project,
     title,
   };
 }

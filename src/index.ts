@@ -18,6 +18,7 @@ for (let i = 0; i < 11; i++) {
     "A long string of content to test the description property of the todo object",
     Date.now() + Math.random() * 1000000000,
     priorities[Math.floor(Math.random() * priorities.length)],
+    projects[0],
     "Test Title"
   );
   projects[0].todoList.push(todo);
