@@ -1,6 +1,6 @@
 interface checklistItem {
   complete: boolean;
-  step: string;
+  description: string;
 }
 
 type priority = "Immediate" | "Urgent" | "Moderate" | "Low";

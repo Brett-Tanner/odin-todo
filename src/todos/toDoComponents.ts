@@ -1,7 +1,7 @@
+import { showChecklist } from "../checklists/checkListComponents";
 import { format } from "date-fns";
 import { modal } from "../sharedComponents";
 import { sortByDueDate, toDoFactory } from "./toDoController";
-import { tr } from "date-fns/locale";
 
 function buttonRow(todo: todo, target: HTMLDivElement) {
   const buttons: HTMLButtonElement[] = [];
@@ -126,13 +126,6 @@ function getMain() {
     main.id = "content";
     return main;
   }
-}
-
-// TODO: implement this
-function checklistForm(todo: todo) {
-  const form = document.createElement("form");
-
-  return form;
 }
 
 function form(project: project, todo?: todo) {
@@ -262,31 +255,6 @@ function removeFromList(todo: todo) {
 
 function showDescription(todo: todo, target: HTMLDivElement) {
   target.innerText = todo.description;
-}
-
-function showChecklist(todo: todo, target: HTMLDivElement) {
-  target.innerHTML = "";
-  const addChecklistButton = document.createElement("button");
-  addChecklistButton.classList.add("btn-primary");
-  addChecklistButton.innerText = "➕ Checklist";
-  addChecklistButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    modal(`New checklist for ${todo.title}`, checklistForm(todo));
-  });
-  if (todo.checklist.length === 0) {
-    const p = document.createElement("p");
-    p.innerText = "No checklist yet";
-    target.append(p, addChecklistButton);
-    target.classList.add(
-      "flex",
-      "flex-col",
-      "gap-3",
-      "justify-center",
-      "items-center"
-    );
-  } else {
-    throw new Error("Haven't implement checklist display yet");
-  }
 }
 
 function showEditModal(todo: todo) {

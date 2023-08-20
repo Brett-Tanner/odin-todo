@@ -1,11 +1,11 @@
-function checklistItemFactory(step: string) {
+function checklistItemFactory(description: string) {
   let complete = false;
 
   function toggleComplete() {
     complete = !complete;
   }
 
-  return { complete, step, toggleComplete };
+  return { complete, description, toggleComplete };
 }
 
 export { checklistItemFactory };
