@@ -1,9 +1,10 @@
 function modal(title: string, content: HTMLFormElement) {
   const modal = document.createElement("dialog");
+  modal.id = "modal";
 
   const heading = document.createElement("h2");
   heading.innerText = title;
-  heading.classList.add("mb-4", "font-bold", "text-xl");
+  heading.classList.add("mb-4", "font-bold", "text-xl", "px-11");
   modal.appendChild(heading);
 
   const closeButton = document.createElement("button");

@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { modal } from "../sharedComponents";
-import { sortByDueDate } from "./toDoController";
-import { todoForm } from "../projects/projectComponents";
+import { sortByDueDate, toDoFactory } from "./toDoController";
+import { tr } from "date-fns/locale";
 
 function buttonRow(todo: todo, target: HTMLDivElement) {
   const buttons: HTMLButtonElement[] = [];
@@ -71,7 +71,7 @@ function card(todo: todo) {
 
   const title = document.createElement("h5");
   title.innerText = todo.title;
-  title.classList.add("font-semibold", "text-lg");
+  title.classList.add("font-semibold", "text-lg", "truncate");
   todoCard.appendChild(title);
 
   const dueDate = document.createElement("p");
@@ -135,6 +135,83 @@ function checklistForm(todo: todo) {
   return form;
 }
 
+function form(project: project, todo?: todo) {
+  const form = document.createElement("form");
+  form.method = "dialog";
+  const fieldArray: HTMLElement[] = [];
+
+  const titleField = document.createElement("div");
+  const titleLabel = document.createElement("label");
+  titleLabel.innerText = "Title";
+  const titleInput = document.createElement("input");
+  titleInput.autofocus = true;
+  if (todo) titleInput.value = todo.title;
+  titleField.append(titleLabel, titleInput);
+  fieldArray.push(titleField);
+
+  const descriptionField = document.createElement("div");
+  const descriptionLabel = document.createElement("label");
+  descriptionLabel.innerText = "Description";
+  const descriptionInput = document.createElement("textarea");
+  if (todo) descriptionInput.value = todo.description;
+  descriptionField.append(descriptionLabel, descriptionInput);
+  fieldArray.push(descriptionField);
+
+  const priorityField = document.createElement("div");
+  const priorityLabel = document.createElement("label");
+  priorityLabel.innerText = "Priority";
+  const priorityInput = document.createElement("select");
+  const priorities: priority[] = ["Immediate", "Urgent", "Moderate", "Low"];
+  priorities.forEach((priority) => {
+    const option = document.createElement("option");
+    option.innerText = priority;
+    option.value = priority;
+    if (todo && todo.priority === priority) option.selected = true;
+    priorityInput.appendChild(option);
+  });
+  priorityField.append(priorityLabel, priorityInput);
+  fieldArray.push(priorityField);
+
+  const dueDateField = document.createElement("div");
+  const dueDateLabel = document.createElement("label");
+  dueDateLabel.innerText = "Due Date";
+  const dueDateInput = document.createElement("input");
+  if (todo) dueDateInput.value = format(new Date(todo.dueDate), "yyyy-MM-dd");
+  dueDateInput.type = "date";
+  dueDateField.append(dueDateLabel, dueDateInput);
+  fieldArray.push(dueDateField);
+
+  fieldArray.forEach((field) => {
+    field.classList.add("flex", "flex-col", "gap-2");
+    form.appendChild(field);
+  });
+  const submitButton = document.createElement("button");
+  submitButton.innerText = "Submit ToDo";
+  submitButton.classList.add("btn-primary", "border", "border-slate-400");
+  submitButton.addEventListener("click", () => {
+    const description = descriptionInput.value;
+    const dueDate = Date.parse(dueDateInput.value);
+    const priority = priorityInput.value as priority;
+    const title = titleInput.value;
+
+    if (todo) {
+      todo.description = description;
+      todo.dueDate = dueDate;
+      todo.priority = priority;
+      todo.title = title;
+    } else {
+      project.todoList.push(
+        toDoFactory(description, dueDate, priority, project, title)
+      );
+    }
+    list(project.todoList, `${project.name} ToDos`);
+  });
+  form.appendChild(submitButton);
+
+  form.classList.add("flex", "flex-col", "gap-4");
+  return form;
+}
+
 function list(todos: todo[], title: string) {
   const mainHeading = document.getElementById("mainHeading");
   if (mainHeading) {
@@ -151,10 +228,29 @@ function list(todos: todo[], title: string) {
   });
 }
 
-// TODO: implement this
-function noteForm(todo: todo) {
+function noteForm(todo: todo, target: HTMLDivElement) {
   const form = document.createElement("form");
+  form.method = "dialog";
 
+  const noteField = document.createElement("div");
+  const noteLabel = document.createElement("label");
+  noteLabel.innerText = "Add your note here";
+  const noteInput = document.createElement("textarea");
+  noteInput.autofocus = true;
+  noteField.append(noteLabel, noteInput);
+  noteField.classList.add("flex", "flex-col", "gap-2");
+  form.appendChild(noteField);
+
+  const submitButton = document.createElement("button");
+  submitButton.classList.add("btn-primary");
+  submitButton.innerText = "Add Note";
+  submitButton.addEventListener("click", () => {
+    todo.notes.push(noteInput.value);
+    showNotes(todo, target);
+  });
+  form.appendChild(submitButton);
+
+  form.classList.add("flex", "flex-col", "gap-4");
   return form;
 }
 
@@ -194,30 +290,31 @@ function showChecklist(todo: todo, target: HTMLDivElement) {
 }
 
 function showEditModal(todo: todo) {
-  modal("Edit ToDo", todoForm(todo.project, todo));
+  modal("Edit ToDo", form(todo.project, todo));
 }
 
 function showNotes(todo: todo, target: HTMLDivElement) {
   target.innerHTML = "";
   const emptyMessage = "No notes yet";
-  const p = document.createElement("p");
   const addNoteButton = document.createElement("button");
   addNoteButton.classList.add("btn-primary");
   addNoteButton.innerText = "➕ Note";
   addNoteButton.addEventListener("click", (e) => {
     e.preventDefault();
-    modal(`New note for ${todo.title}`, noteForm(todo));
+    modal(`New note for ${todo.title}`, noteForm(todo, target));
   });
   const notes: string[] | string =
     todo.notes.length === 0 ? emptyMessage : todo.notes;
 
   if (notes instanceof Array) {
     notes.forEach((note) => {
+      const p = document.createElement("p");
       p.innerText = note;
       target.appendChild(p);
     });
     target.appendChild(addNoteButton);
   } else {
+    const p = document.createElement("p");
     p.innerText = emptyMessage;
     target.append(p, addNoteButton);
     target.classList.add(
@@ -230,4 +327,4 @@ function showNotes(todo: todo, target: HTMLDivElement) {
   }
 }
 
-export { list };
+export { list, form };

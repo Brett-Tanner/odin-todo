@@ -1,8 +1,6 @@
-import { format } from "date-fns";
 import { modal } from "../sharedComponents";
 import { projects } from "..";
 import { projectFactory } from "./projectController";
-import { toDoFactory } from "../todos/toDoController";
 import * as todoComponents from "../todos/toDoComponents";
 
 function card(project: project) {
@@ -32,7 +30,7 @@ function card(project: project) {
   );
   newTodoButton.addEventListener("click", (e) => {
     e.preventDefault();
-    modal("New ToDo", todoForm(project));
+    modal("New ToDo", todoComponents.form(project));
   });
   card.appendChild(newTodoButton);
 
@@ -72,7 +70,7 @@ function list(projects: project[]) {
   newProjectButton.innerText = "➕ Project";
   newProjectButton.addEventListener("click", (e) => {
     e.preventDefault();
-    modal("New Project", projectForm());
+    modal("New Project", form());
   });
   newProjectButton.classList.add(
     "btn-primary",
@@ -126,7 +124,7 @@ function list(projects: project[]) {
   document.body.appendChild(listContainer);
 }
 
-function projectForm() {
+function form() {
   const form = document.createElement("form");
   form.method = "dialog";
 
@@ -152,81 +150,4 @@ function projectForm() {
   return form;
 }
 
-function todoForm(project: project, todo?: todo) {
-  const form = document.createElement("form");
-  form.method = "dialog";
-  const fieldArray: HTMLElement[] = [];
-
-  const titleField = document.createElement("div");
-  const titleLabel = document.createElement("label");
-  titleLabel.innerText = "Title";
-  const titleInput = document.createElement("input");
-  titleInput.autofocus = true;
-  if (todo) titleInput.value = todo.title;
-  titleField.append(titleLabel, titleInput);
-  fieldArray.push(titleField);
-
-  const descriptionField = document.createElement("div");
-  const descriptionLabel = document.createElement("label");
-  descriptionLabel.innerText = "Description";
-  const descriptionInput = document.createElement("textarea");
-  if (todo) descriptionInput.value = todo.description;
-  descriptionField.append(descriptionLabel, descriptionInput);
-  fieldArray.push(descriptionField);
-
-  const priorityField = document.createElement("div");
-  const priorityLabel = document.createElement("label");
-  priorityLabel.innerText = "Priority";
-  const priorityInput = document.createElement("select");
-  const priorities: priority[] = ["Immediate", "Urgent", "Moderate", "Low"];
-  priorities.forEach((priority) => {
-    const option = document.createElement("option");
-    option.innerText = priority;
-    option.value = priority;
-    if (todo && todo.priority === priority) option.selected = true;
-    priorityInput.appendChild(option);
-  });
-  priorityField.append(priorityLabel, priorityInput);
-  fieldArray.push(priorityField);
-
-  const dueDateField = document.createElement("div");
-  const dueDateLabel = document.createElement("label");
-  dueDateLabel.innerText = "Due Date";
-  const dueDateInput = document.createElement("input");
-  if (todo) dueDateInput.value = format(new Date(todo.dueDate), "yyyy-MM-dd");
-  dueDateInput.type = "date";
-  dueDateField.append(dueDateLabel, dueDateInput);
-  fieldArray.push(dueDateField);
-
-  fieldArray.forEach((field) => {
-    field.classList.add("flex", "flex-col", "gap-2");
-    form.appendChild(field);
-  });
-  const submitButton = document.createElement("button");
-  submitButton.innerText = "Submit ToDo";
-  submitButton.classList.add("btn-primary", "border", "border-slate-400");
-  submitButton.addEventListener("click", () => {
-    const description = descriptionInput.value;
-    const dueDate = Date.parse(dueDateInput.value);
-    const priority = priorityInput.value as priority;
-    const title = titleInput.value;
-
-    if (todo) {
-      todo.description = description;
-      todo.dueDate = dueDate;
-      todo.priority = priority;
-      todo.title = title;
-    } else {
-      project.todoList.push(
-        toDoFactory(description, dueDate, priority, project, title)
-      );
-    }
-    todoComponents.list(project.todoList, `${project.name} ToDos`);
-  });
-  form.appendChild(submitButton);
-
-  form.classList.add("flex", "flex-col", "gap-4");
-  return form;
-}
-
-export { list, todoForm };
+export { list };
