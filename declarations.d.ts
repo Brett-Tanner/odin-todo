@@ -15,6 +15,7 @@ interface project {
     priority: priority,
     title: string
   ): todo;
+  deleteProject(): project;
 }
 
 interface todo {

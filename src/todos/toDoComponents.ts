@@ -2,6 +2,7 @@ import { showChecklist } from "../checklists/checkListComponents";
 import { format } from "date-fns";
 import { modal } from "../sharedComponents";
 import { sortByDueDate, toDoFactory } from "./toDoController";
+import { projects } from "..";
 
 function buttonRow(todo: todo, target: HTMLDivElement) {
   const buttons: HTMLButtonElement[] = [];
@@ -197,7 +198,7 @@ function form(project: project, todo?: todo) {
         toDoFactory(description, dueDate, priority, project, title)
       );
     }
-    list(project.todoList, `${project.name} ToDos`);
+    list(project.todoList, `${project.name} ToDos`, project);
   });
   form.appendChild(submitButton);
 
@@ -205,13 +206,14 @@ function form(project: project, todo?: todo) {
   return form;
 }
 
-function list(todos: todo[], title: string) {
+function list(todos: todo[], title: string, project?: project) {
   const mainHeading = document.getElementById("mainHeading");
   if (mainHeading) {
     mainHeading.innerText = title;
   } else {
     throw new Error("Main heading is missing");
   }
+
   const main = getMain();
   main.innerHTML = "";
   todos.sort(sortByDueDate);
@@ -219,6 +221,38 @@ function list(todos: todo[], title: string) {
     const todoCard = card(todo);
     main?.appendChild(todoCard);
   });
+
+  if (project) {
+    const deleteProjectButton = document.createElement("button");
+    deleteProjectButton.innerText = "Delete Project";
+    deleteProjectButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      console.log(project.deleteProject());
+      const allTodos = projects.reduce((array: todo[], project) => {
+        project.todoList.forEach((toDo) => {
+          array.push(toDo);
+        });
+        return array;
+      }, []);
+      list(allTodos, "All ToDos");
+    });
+    deleteProjectButton.classList.add(
+      "flex",
+      "justify-center",
+      "items-center",
+      "p-3",
+      "col-span-5",
+      "rounded-lg",
+      "font-xl",
+      "font-bold",
+      "bg-red-800",
+      "w-full",
+      "h-full",
+      "transition-transform",
+      "hover:scale-105"
+    );
+    main.appendChild(deleteProjectButton);
+  }
 }
 
 function noteForm(todo: todo, target: HTMLDivElement) {
@@ -250,7 +284,7 @@ function noteForm(todo: todo, target: HTMLDivElement) {
 function removeFromList(todo: todo) {
   const project = todo.project;
   todo.deleteTodo();
-  list(project.todoList, `${project.name} ToDos`);
+  list(project.todoList, `${project.name} ToDos`, project);
 }
 
 function showDescription(todo: todo, target: HTMLDivElement) {

@@ -17,7 +17,7 @@ function card(project: project) {
   );
   projectLink.addEventListener("click", (e) => {
     e.preventDefault();
-    todoComponents.list(project.todoList, `${project.name} ToDos`);
+    todoComponents.list(project.todoList, `${project.name} ToDos`, project);
   });
   card.appendChild(projectLink);
 
