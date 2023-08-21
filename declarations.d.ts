@@ -1,6 +1,7 @@
 interface checklistItem {
   complete: boolean;
   description: string;
+  toggleComplete(): boolean;
 }
 
 type priority = "Immediate" | "Urgent" | "Moderate" | "Low";

@@ -60,13 +60,21 @@ function showChecklist(todo: todo, target: HTMLDivElement) {
       const statusCheck = document.createElement("input");
       statusCheck.type = "checkbox";
       if (step.complete) statusCheck.checked = true;
-      // TODO: Need an event listener on the checkbox to toggle complete
+      statusCheck.addEventListener("change", () => {
+        step.toggleComplete();
+      });
       listItem.innerText = step.description;
       listItem.prepend(statusCheck);
-      // TODO: style
+      listItem.classList.add("flex", "justify-start", "gap-2");
       list.appendChild(listItem);
     });
-    // TODO: style
+    list.classList.add(
+      "w-full",
+      "flex",
+      "flex-col",
+      "justify-center",
+      "items-start"
+    );
     target.appendChild(list);
   }
 }

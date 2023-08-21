@@ -1,8 +1,10 @@
 function checklistItemFactory(description: string) {
   let complete = false;
 
-  function toggleComplete() {
-    complete = !complete;
+  function toggleComplete(this: checklistItem) {
+    this.complete = this.complete ? false : true;
+
+    return this.complete;
   }
 
   return { complete, description, toggleComplete };
