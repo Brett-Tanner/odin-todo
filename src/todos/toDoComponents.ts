@@ -222,7 +222,7 @@ function list(todos: todo[], title: string, project?: project) {
   todos.sort(sortByDueDate);
   todos.forEach((todo) => {
     const todoCard = card(todo);
-    main?.appendChild(todoCard);
+    main.appendChild(todoCard);
   });
 
   if (project) {
@@ -245,7 +245,9 @@ function list(todos: todo[], title: string, project?: project) {
       "justify-center",
       "items-center",
       "p-3",
-      "col-span-5",
+      "col-span-2",
+      "md:col-span-3",
+      "lg:col-span-4",
       "rounded-lg",
       "font-xl",
       "font-bold",
