@@ -28,4 +28,29 @@ function projectFactory(name: string) {
   return { addTodo, deleteProject, name, todoList };
 }
 
-export { projectFactory };
+function saveProjects() {
+  const dereferencedProjects = projects.map((project) => {
+    const dereferencedToDos = project.todoList.map((todo) => {
+      const dereferencedToDo = {
+        description: todo.description,
+        dueDate: todo.dueDate,
+        notes: todo.notes,
+        priority: todo.priority,
+        title: todo.title,
+        checklist: todo.checklist,
+      };
+
+      return dereferencedToDo;
+    });
+    const dereferencedProject = {
+      name: project.name,
+      todoList: dereferencedToDos,
+    };
+
+    return dereferencedProject;
+  });
+
+  localStorage.setItem("projects", JSON.stringify(dereferencedProjects));
+}
+
+export { projectFactory, saveProjects };

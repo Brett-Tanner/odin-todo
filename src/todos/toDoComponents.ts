@@ -1,5 +1,6 @@
 import { showChecklist } from "../checklists/checkListComponents";
 import { format } from "date-fns";
+import { saveProjects } from "../projects/projectController";
 import { modal } from "../sharedComponents";
 import { sortByDueDate, toDoFactory } from "./toDoController";
 import { projects } from "..";
@@ -44,6 +45,7 @@ function buttonRow(todo: todo, target: HTMLDivElement) {
   deleteButton.addEventListener("click", (e) => {
     e.preventDefault();
     removeFromList(todo);
+    saveProjects();
   });
   deleteButton.innerHTML = "<i class='bi bi-trash3'></i>";
   buttons.push(deleteButton);
@@ -198,6 +200,7 @@ function form(project: project, todo?: todo) {
         toDoFactory(description, dueDate, priority, project, title)
       );
     }
+    saveProjects();
     list(project.todoList, `${project.name} ToDos`, project);
   });
   form.appendChild(submitButton);
@@ -227,13 +230,14 @@ function list(todos: todo[], title: string, project?: project) {
     deleteProjectButton.innerText = "Delete Project";
     deleteProjectButton.addEventListener("click", (e) => {
       e.preventDefault();
-      console.log(project.deleteProject());
+      project.deleteProject();
       const allTodos = projects.reduce((array: todo[], project) => {
         project.todoList.forEach((toDo) => {
           array.push(toDo);
         });
         return array;
       }, []);
+      saveProjects();
       list(allTodos, "All ToDos");
     });
     deleteProjectButton.classList.add(
@@ -273,6 +277,7 @@ function noteForm(todo: todo, target: HTMLDivElement) {
   submitButton.innerText = "Add Note";
   submitButton.addEventListener("click", () => {
     todo.notes.push(noteInput.value);
+    saveProjects();
     showNotes(todo, target);
   });
   form.appendChild(submitButton);

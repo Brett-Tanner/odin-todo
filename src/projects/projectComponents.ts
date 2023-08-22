@@ -1,6 +1,6 @@
 import { modal } from "../sharedComponents";
 import { projects } from "..";
-import { projectFactory } from "./projectController";
+import { projectFactory, saveProjects } from "./projectController";
 import * as todoComponents from "../todos/toDoComponents";
 
 function card(project: project) {
@@ -142,6 +142,7 @@ function form() {
   submitButton.innerText = "Submit Project";
   submitButton.addEventListener("click", () => {
     projects.push(projectFactory(nameInput.value));
+    saveProjects();
     list(projects);
   });
   form.appendChild(submitButton);
